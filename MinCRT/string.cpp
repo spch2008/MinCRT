@@ -7,7 +7,7 @@ unsigned strlen(const char *str)
 		return 0;
 
 	unsigned cnt = 0;
-	char *p = str;
+	const char *p = str;
 	while( *p != '\0')
 		cnt++;
 	return cnt;
@@ -63,4 +63,40 @@ char * strcat ( char * dst, const char * src )
 	return ret;
 }
 
+char *itoa(long int val, char *str, int base)
+{
+	str[0] = '\0';
+	if(base < 2 || base > 36)
+		return str;
 
+	if(base != 10 && val < 0)
+		return str;
+
+	char *p = str;
+	char *head = str;
+	char digits[] = "0123456789abcdefghijklmnopqrstuvwxyz";
+	int negative = 0;
+	if(base == 10 && val < 0)
+	{
+		negative = 1;
+		val  = -val;
+	}
+
+	while (val > 0)
+    {
+      *p++ = digits[val % base];
+      val /= base;
+    }
+	if(negative == 1) *p++ = '-';
+	*p = '\0';
+
+	char tmp;
+	for( --p; head < p; head++, p--)
+	{
+		tmp = *head;
+		*head = *p;
+		*p = tmp;
+	}
+
+	return str;
+}
