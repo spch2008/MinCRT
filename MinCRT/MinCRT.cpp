@@ -80,3 +80,7 @@ void exit(int exitCode)
 	// \n\t 解释： http://blog.csdn.net/robin_qiu/article/details/613904
 #endif
 }
+
+//注意：
+//windows平台下，字符串通过GetCommandLineA得到，
+//而linux平台下，加载器会自动放于栈上
