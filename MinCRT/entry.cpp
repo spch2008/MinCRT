@@ -58,10 +58,10 @@ void spch_start()
     
 	if( !crt_heap_init() )
 		crt_fatal_error("heap initialize failed");
-	/*
+	
 	if( !crt_io_init() )
 		crt_fatal_error("IO initialize failed");
-    */
+    
 	ret = main(argc, argv);
 	exit(ret);
 }
