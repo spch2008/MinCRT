@@ -27,5 +27,13 @@
     <ClCompile Include="string.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="malloc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MinCRT.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
