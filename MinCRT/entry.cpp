@@ -1,3 +1,4 @@
+#include "MinCRT.h"
 #ifdef WIN32
   #include <Windows.h>
 #endif
@@ -54,10 +55,10 @@ void spch_start()
 	// ebp_req point to ebp
 
 #endif
-    /*
+    
 	if( !crt_heap_init() )
 		crt_fatal_error("heap initialize failed");
-
+	/*
 	if( !crt_io_init() )
 		crt_fatal_error("IO initialize failed");
     */
