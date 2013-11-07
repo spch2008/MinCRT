@@ -22,8 +22,21 @@ typedef struct _heap_header
 
 static heap_header * heap_list = 0;
 
+#ifndef WIN32
+static int brk(void *end_data_segment)
+{
+	int ret = 0;
+	
+	asm( "movl $45, %%eax \n\t"
+	     "movl %1,  %%ebx \n\t"
+		 "int $0x80       \n\t"
+		 : "=r"(ret) : "m"(end_data_segment));
 
-int crt_heap_init()
+	return ret;
+}
+#endif
+
+static int crt_heap_init()
 {
 	void *base  = 0;
 	unsigned heap_size = 1024 * 1024 * 32;  //32M
@@ -130,3 +143,4 @@ void free(void *p)
    3. 缺点：当一个链指针遭到破坏后，整个堆失效
    4. 信息存在头部，所以头部不能被破坏，且头部占用多余空间存储信息
 */
+
