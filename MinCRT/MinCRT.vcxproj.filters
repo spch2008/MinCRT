@@ -30,6 +30,9 @@
     <ClCompile Include="malloc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="stdio.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MinCRT.h">

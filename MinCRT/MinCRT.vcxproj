@@ -80,6 +80,7 @@
     <ClCompile Include="entry.cpp" />
     <ClCompile Include="malloc.cpp" />
     <ClCompile Include="MinCRT.cpp" />
+    <ClCompile Include="stdio.cpp" />
     <ClCompile Include="string.cpp" />
   </ItemGroup>
   <ItemGroup>
