@@ -9,8 +9,11 @@ int crt_io_init()
 #include <windows.h>
 
 FILE * fopen(const char *filename, const char *mode)
-{
-	return NULL;
+{	
+	HANDLE hFile = CreateFileA(filename, GENERIC_WRITE | GENERIC_READ, 0, 0, 1, 0, 0);
+	if(hFile == INVALID_HANDLE_VALUE)
+		return 0;
+	return (FILE*)hFile;
 }
 
 int fclose(FILE * stream)
@@ -109,7 +112,8 @@ static int seek(int fd, int offset, int mod)
 
 FILE * fopen(const char *filename, const char *mode)
 {
-	return NULL;
+	int fd = open(filename, 02 | 0100, 0700);
+	return (FILE*)fd;
 }
 
 int fclose(FILE * stream)
@@ -132,3 +136,94 @@ int fseek(FILE *stream, long int offset, int origin)
 	return seek(stream, offset, origin);
 }
 #endif
+
+
+int fputc(int character, FILE *stream)
+{
+	if( fwrite(&character, sizeof(char), 1, stream) == 0)
+		return EOF;
+	else
+		return character;
+}
+
+
+int fputs(const char *str, FILE *stream)
+{
+	int len = strlen(str);
+	if( fwrite(str, sizeof(char), len, stream) == 0)
+		return EOF;
+	else
+		return len;
+}
+
+char *strchr(char * str, int character )
+{
+	while(str != '\0')
+	{
+		if( *str == character)
+			return str;
+		str++;
+	}
+	return NULL;
+}
+
+int vfprintf( FILE * stream, const char * format, va_list arg )
+{
+	const char *f = format;
+	int ret = 0;
+	while( *f != '\0')
+	{
+		if(*f != '%')
+		{
+			const char *next = strchr(f+1, '%');
+			if(next == NULL)
+				next = strchr(f+1, '\0');
+			while(f < next)
+			{
+				fputc(*f++, stream);
+				ret++;
+			}
+			continue;
+		}
+
+		++f;
+		if( *f == '%')
+		{
+			fputc(*f++, stream);
+			ret++;
+			continue;
+		}
+
+		char c = *f;
+		switch (c)
+		{
+		case 'd':
+			char buffer[12];
+			itoa(va_arg(arg, int), buffer, 10);
+			fputs(buffer, stream);
+			ret += strlen(buffer);
+			break;
+		case 's':
+			const char *s = va_arg(arg, char *);
+			fputs(s, stream);
+			ret += strlen(s);
+			break;
+		}
+		++f;
+	}
+	return ret;
+}
+
+int printf ( const char * format, ... )
+{
+	va_list(list);
+	va_start(list, format);
+	return vfprintf(stdout, format, list);
+}
+
+int fprintf ( FILE * stream, const char * format, ... )
+{
+	va_list(list);
+	va_start(list, format);
+	return vfprintf(stream, format, list);
+}

@@ -16,6 +16,12 @@ typedef int FILE;
 #define stderr ((FILE*)2)
 #endif
 
+
+#define va_list char*
+#define va_start(ap, arg) (ap=(va_list)&arg+sizeof(arg))
+#define va_arg(ap, t) (*(t*)(( ap += sizeof(t)) - sizeof(t)))
+#define va_end(ap) (ap=(va_list)0)
+
 int crt_heap_init();
 int crt_io_init();
 #endif
